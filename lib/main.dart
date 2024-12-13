@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:portefolio/common/objects.dart';
@@ -24,6 +23,7 @@ class MyApp extends StatelessWidget {
           colorSchemeSeed: Colors.blue,
           useMaterial3: true),
       home: const HomePage(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -74,17 +74,23 @@ class _HomePageState extends State<HomePage>
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: _backgroundColor,
-        appBar: MyAppBar(
-          onDestinationSelected: (index) {
-            _updateCurrentPageIndex(index);
-          },
-          selectedIndex: selectedIndex,
-          width: width,
-          backgroundColor: _backgroundColor,
+        appBar: PreferredSize(
+          preferredSize: width.value > 550
+              ? Size.fromHeight(MediaQuery.of(context).size.height / 15)
+              : Size.fromHeight(MediaQuery.of(context).size.height / 10),
+          child: MyAppBar(
+            onDestinationSelected: (index) {
+              _updateCurrentPageIndex(index);
+            },
+            selectedIndex: selectedIndex,
+            width: width,
+            backgroundColor: _backgroundColor,
+          ),
         ),
         body: PageView(
-            pageSnapping: false,
-            scrollDirection: Axis.vertical,
+            pageSnapping: width.value > 550 ? false : true,
+            scrollDirection:
+                width.value > 550 ? Axis.vertical : Axis.horizontal,
             controller: _pageViewController,
             onPageChanged: _handlePageViewChanged,
             children: pages.value.map((page) => page.page).toList()),
@@ -92,7 +98,7 @@ class _HomePageState extends State<HomePage>
           backgroundColor: _backgroundColor,
         ),
         floatingActionButton: selectedIndex != 0
-            ? FloatingButton(
+            ? MyFloatingActionButton(
                 // animation: _barAnimation,
                 key: const Key("FAB1"),
                 onPressed: () {
@@ -102,7 +108,9 @@ class _HomePageState extends State<HomePage>
                   });
                 },
                 elevation: 10,
-                child: const Icon(Icons.arrow_upward),
+                child: width.value > 550
+                    ? const Icon(Icons.arrow_upward)
+                    : const Icon(Icons.arrow_back),
               )
             : null,
         drawer:
@@ -110,9 +118,7 @@ class _HomePageState extends State<HomePage>
             //     ? null
             //     :
             MyDrawer(
-          callback: () => setState(() {
-            print("object");
-          }),
+          callback: () => setState(() {}),
           backgroundColor: _backgroundColor,
           selectedIndex: selectedIndex,
           onDestinationSelected: (index) {
@@ -124,9 +130,9 @@ class _HomePageState extends State<HomePage>
   }
 
   void _handlePageViewChanged(int currentPageIndex) {
-    if (!_isOnDesktopAndWeb) {
-      return;
-    }
+    // if (!_isOnDesktopAndWeb) {
+    //   return;
+    // }
     // _tabController.index = currentPageIndex;
     setState(() {
       selectedIndex = currentPageIndex;
@@ -141,22 +147,6 @@ class _HomePageState extends State<HomePage>
     );
   }
 
-  bool get _isOnDesktopAndWeb {
-    if (kIsWeb) {
-      return true;
-    }
-    switch (defaultTargetPlatform) {
-      case TargetPlatform.macOS:
-      case TargetPlatform.linux:
-      case TargetPlatform.windows:
-        return true;
-      case TargetPlatform.android:
-      case TargetPlatform.iOS:
-      case TargetPlatform.fuchsia:
-        return false;
-    }
-  }
-
   _showMyDialog() {
     return showDialog(
         context: context,
@@ -169,7 +159,7 @@ class _HomePageState extends State<HomePage>
                   width: MediaQuery.of(context).size.width > 800
                       ? MediaQuery.of(context).size.width / 4
                       : MediaQuery.of(context).size.width / 2,
-                  child: Image.asset("assets/portfolio.gif")),
+                  child: Image.asset("assets/portfolio-flutter.gif")),
               actions: [
                 TextButton(
                     onPressed: () {

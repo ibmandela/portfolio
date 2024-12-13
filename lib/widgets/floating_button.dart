@@ -1,8 +1,7 @@
-
 import 'package:flutter/material.dart';
 
-class FloatingButton extends StatefulWidget {
-  const FloatingButton(
+class MyFloatingActionButton extends StatefulWidget {
+  const MyFloatingActionButton(
       {
       // required this.animation,
       required this.child,
@@ -15,35 +14,25 @@ class FloatingButton extends StatefulWidget {
   final double? elevation;
 
   @override
-  State<FloatingButton> createState() => _FloatingButtonState();
+  State<MyFloatingActionButton> createState() => _MyFloatingActionButtonState();
 }
 
-class _FloatingButtonState extends State<FloatingButton> {
+class _MyFloatingActionButtonState extends State<MyFloatingActionButton> {
   late final ColorScheme _colorScheme = Theme.of(context).colorScheme;
-  // late final Animation<double> _scaleAnimation =
-  //     ScaleAnimation(parent: widget.animation);
-  // late final Animation<double> _shapeAnimation =
-  //     ShapeAnimation(parent: widget.animation);
+
   @override
   Widget build(BuildContext context) {
-    return
-        // ScaleTransition(
-        // scale: _scaleAnimation,
-        // child:
-        FloatingActionButton(
+    return FloatingActionButton(
       elevation: widget.elevation,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(
-          Radius.circular(30
-              // lerpDouble(30, 15, _shapeAnimation.value)!
-              ),
+          Radius.circular(30),
         ),
       ),
       backgroundColor: _colorScheme.tertiaryContainer,
       foregroundColor: _colorScheme.onTertiaryContainer,
       onPressed: widget.onPressed,
       child: widget.child,
-      // )
     );
   }
 }

@@ -27,6 +27,9 @@ class _MyBigCardState extends State<MyBigCard> {
   bool _isHover = false;
   @override
   Widget build(BuildContext context) {
+    double fontSize = MediaQuery.of(context).size.width > 550
+        ? MediaQuery.of(context).size.width / 140
+        : MediaQuery.of(context).size.width / 40;
     return AnimatedContainer(
       // width: 40,
       // height: 50,
@@ -35,8 +38,8 @@ class _MyBigCardState extends State<MyBigCard> {
           EdgeInsets.only(top: (_isHover) ? 3 : 5, bottom: !(_isHover) ? 3 : 5),
       child: Material(
         elevation: 10,
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(30))),
+        // shape: const RoundedRectangleBorder(
+        //     borderRadius: BorderRadius.all(Radius.circular(30))),
         color: !_isHover ? null : Theme.of(context).primaryColor,
         // elevation: 5,
         // child: SizedBox(
@@ -48,7 +51,11 @@ class _MyBigCardState extends State<MyBigCard> {
                 _isHover = val;
               });
             },
-            onTap: () {},
+            onTap: () {
+              setState(() {
+                _isHover = !_isHover;
+              });
+            },
             child: widget.isPhoneImage
                 ? Stack(
                     children: [
@@ -60,9 +67,7 @@ class _MyBigCardState extends State<MyBigCard> {
                             padding: const EdgeInsets.all(5.0),
                             child: Text(
                               widget.comment,
-                              style: standard.copyWith(
-                                  fontSize:
-                                      MediaQuery.of(context).size.width / 105),
+                              style: standard.copyWith(fontSize: fontSize),
                             ),
                           ))
                         ],
@@ -77,9 +82,9 @@ class _MyBigCardState extends State<MyBigCard> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Material(elevation: 20, child: widget.child),
-                      const SizedBox(
-                        height: 10,
-                      ),
+                      // const SizedBox(
+                      //   height: 10,
+                      // ),
                       Expanded(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -90,10 +95,7 @@ class _MyBigCardState extends State<MyBigCard> {
                                 style: standard.copyWith(
                                     color:
                                         _isHover ? Colors.white : Colors.black,
-                                    fontSize:
-                                        MediaQuery.of(context).size.width *
-                                            2 /
-                                            widget.comment.length),
+                                    fontSize: fontSize),
                               ),
                               if (_isHover)
                                 Align(
@@ -175,7 +177,7 @@ class MyBigCard2 extends StatelessWidget {
                 ),
               ),
             ),
-            _buildStars(star),
+            FittedBox(child: _buildStars(star)),
           ],
         ));
   }

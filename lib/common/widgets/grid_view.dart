@@ -4,8 +4,14 @@ import 'package:portefolio/common/widgets/big_card.dart';
 import 'package:portefolio/common/widgets/card.dart';
 
 class MyGridView extends StatelessWidget {
+  final ValueChanged<String?> onItemSelected;
+  final String? selectedItem;
   final List<MyFramework> list;
-  const MyGridView({required this.list, super.key});
+  const MyGridView(
+      {required this.list,
+      required this.onItemSelected,
+      required this.selectedItem,
+      super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,13 +24,19 @@ class MyGridView extends StatelessWidget {
             valueListenable: isHov,
             builder: (context, isHover, child) {
               return Expanded(
-                flex: isHover ? 3 : 1,
+                flex: isHover || selectedItem == framework.label ? 3 : 1,
                 child: InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    if (selectedItem != framework.label) {
+                      return onItemSelected(framework.label);
+                    } else {
+                      return onItemSelected(null);
+                    }
+                  },
                   onHover: (value) {
                     isHov.value = value;
                   },
-                  child: isHover
+                  child: isHover || selectedItem == framework.label
                       ? MyBigCard2(
                           star: framework.star,
                           description: framework.description,

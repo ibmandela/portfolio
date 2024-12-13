@@ -19,17 +19,23 @@ class MyNavigationRailBar extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text(
-          "Trier par plateforme",
-          style: standard,
-        ),
+        MediaQuery.of(context).size.width > 550
+            ? const Text(
+                "Trier par plateforme",
+                style: standard,
+              )
+            : const Text(
+                "Trier\npar\nplateforme",
+                style: standard,
+              ),
         SizedBox(
             height: 350,
-            width: 205,
+            width: MediaQuery.of(context).size.width > 550 ? 205 : 126,
             child: ListView.builder(
                 itemCount: destinations.length,
                 itemBuilder: (context, index) {
                   return MyClickableCard2(
+                    extend: MediaQuery.of(context).size.width > 550,
                     callback: () {
                       onDestinationSelected(destinations[index].destination);
                     },

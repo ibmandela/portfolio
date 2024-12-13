@@ -28,7 +28,7 @@ class _MyAppBarState extends State<MyAppBar>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: pages.value.length, vsync: this);
   }
 
   @override
@@ -39,32 +39,50 @@ class _MyAppBarState extends State<MyAppBar>
 
   @override
   Widget build(BuildContext context) {
-    _tabController.index = widget.selectedIndex;
+    if (!_tabController.indexIsChanging) {
+      _tabController.index = widget.selectedIndex;
+    }
     _tabController.addListener(() {
       if (_tabController.indexIsChanging) {
         widget.onDestinationSelected(_tabController.index);
       }
     });
     return AppBar(
-        // elevation: 10,
-        backgroundColor: widget.backgroundColor,
-        title: Text(
-          pages.value[widget.selectedIndex].label == "Acceuil"
-              ? "BIENVENUE CHEZ IB-DEVELOPPE"
-              : pages.value[widget.selectedIndex].label.toUpperCase(),
-          style: caracteristique,
-        ),
-        actions: [
-          if (MediaQuery.of(context).size.width > 700)
-            SizedBox(
-                width: 700,
-                child: TabBar(
-                    controller: _tabController,
-                    tabs: pages.value.map((d) {
-                      return Tab(text: d.label);
-                      // icon: Icon(d.icon),
-                      // label: d.label,
-                    }).toList()))
-        ]);
+      // elevation: 10,
+      backgroundColor: widget.backgroundColor,
+      title: Text(
+        pages.value[widget.selectedIndex].label == "Acceuil"
+            ? MediaQuery.of(context).size.width > 550
+                ? ""
+                : "BIENVENUE CHEZ IB-DEVELOPPE"
+            : pages.value[widget.selectedIndex].label.toUpperCase(),
+        style: titleStyle(
+            MediaQuery.of(context).size.width > 550
+                ? MediaQuery.of(context).size.width / 110
+                : MediaQuery.of(context).size.width / 25,
+            null),
+      ),
+      actions: [
+        if (MediaQuery.of(context).size.width > 550)
+          SizedBox(
+              width: MediaQuery.of(context).size.width > 700
+                  ? 700
+                  : MediaQuery.of(context).size.width,
+              child: TabBar(
+                  controller: _tabController,
+                  tabs: pages.value.map((d) {
+                    return Tab(text: d.label);
+                  }).toList()))
+      ],
+      bottom: MediaQuery.of(context).size.width > 550
+          ? null
+          : TabBar(
+              controller: _tabController,
+              tabs: pages.value.map((d) {
+                return Tab(
+                  icon: d.icons,
+                );
+              }).toList()),
+    );
   }
 }

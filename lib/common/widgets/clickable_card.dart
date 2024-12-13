@@ -54,11 +54,13 @@ class MyClickableCard2 extends StatefulWidget {
   final VoidCallback callback;
   final String label;
   final bool isSelected;
+  final bool extend;
   const MyClickableCard2(
       {required this.child,
       required this.callback,
       required this.label,
       required this.isSelected,
+      required this.extend,
       super.key});
 
   @override
@@ -100,14 +102,15 @@ class _MyClickableCard2State extends State<MyClickableCard2> {
                   const SizedBox(
                     width: 10,
                   ),
-                  Text(
-                    widget.label,
-                    style: standard.copyWith(
-                      color: _isHover || widget.isSelected
-                          ? Colors.white
-                          : Colors.black,
-                    ),
-                  )
+                  if (widget.extend)
+                    Text(
+                      widget.label,
+                      style: standard.copyWith(
+                        color: _isHover || widget.isSelected
+                            ? Colors.white
+                            : Colors.black,
+                      ),
+                    )
                 ],
               )),
         ),

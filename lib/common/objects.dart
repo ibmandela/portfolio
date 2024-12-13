@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:portefolio/blocs/contact.dart';
+import 'package:portefolio/blocs/gestion.dart';
 import 'package:portefolio/blocs/portofolio.dart';
 import 'package:portefolio/blocs/presentation.dart';
 import 'package:portefolio/blocs/skills.dart';
@@ -7,28 +8,43 @@ import 'package:portefolio/blocs/skills.dart';
 class MyPages {
   String label;
   Widget page;
+  Widget icons;
   Key key;
-  MyPages({required this.label, required this.page, required this.key});
+  MyPages(
+      {required this.label,
+      required this.page,
+      required this.icons,
+      required this.key});
 }
 
 ValueNotifier<List<MyPages>> pages = ValueNotifier([
   MyPages(
       key: const ValueKey("Acceuil"),
       label: "Acceuil",
+      icons: const Icon(Icons.home),
       page: const Presentation()),
   MyPages(
       key: const ValueKey("Mes compétences"),
       label: "Mes compétences",
+      icons: const Icon(Icons.terminal),
       page: const Skills()),
   MyPages(
     key: const ValueKey("Mon portfolio"),
     label: "Mon portfolio",
+    icons: const Icon(Icons.home_repair_service),
     page: const Portefolio(),
   ),
   MyPages(
     key: const ValueKey("Me contacter"),
     label: "Me contacter",
+    icons: const Icon(Icons.quick_contacts_dialer),
     page: const ContactMe(),
+  ),
+  MyPages(
+    key: const ValueKey("Gestion"),
+    label: "Gestion",
+    icons: const Icon(Icons.app_settings_alt_sharp),
+    page: const Gestion(),
   ),
 ]);
 
@@ -63,6 +79,12 @@ class MyBuildedApps {
       required this.comment,
       required this.appLink,
       required this.githubLink});
+}
+
+class MyRowBuilder {
+  Widget child;
+  int flex;
+  MyRowBuilder({required this.child, required this.flex});
 }
 
 List<MyFramework> front = [
@@ -146,6 +168,38 @@ List<MyFramework> back = [
 ];
 List<MyBuildedApps> myAppList = [
   MyBuildedApps(
+      appLink: "portfolio-camara-ibrahima.web.app/",
+      githubLink: "github.com/ibmandela/portfolio.git",
+      image: Image.asset("assets/portfolio-flutter.gif"),
+      compatibility: ["computer", "tablet", "phone"],
+      isPhoneImage: false,
+      comment:
+          "Site web « Responsive Design » montrant mon portfolio. Développé avec le Material Design 3 de flutter."),
+  MyBuildedApps(
+      appLink: "ibrahimacicamara.github.io/portfolio/",
+      githubLink: "github.com/ibrahimacicamara/portfolio.git",
+      image: Image.asset("assets/portfolio-angular.gif"),
+      compatibility: ["computer", "tablet", "phone"],
+      isPhoneImage: false,
+      comment:
+          "Site web « Responsive Design » montrant mon portfolio. Développé avec Angular 17."),
+  MyBuildedApps(
+      appLink: "ibrahimacicamara.github.io/bnpcarrier/",
+      githubLink: "github.com/ibrahimacicamara/bnpcarrier.git",
+      image: Image.asset("assets/bnp.gif"),
+      compatibility: ["computer", "tablet", "phone"],
+      isPhoneImage: false,
+      comment:
+          "Site web « Responsive Design » clone du site web BNP Carrière dont le but est de mettre en évidence mes compétences dans angular."),
+  MyBuildedApps(
+      appLink: "ibrahimacicamara.github.io/bpce/",
+      githubLink: "https://github.com/ibrahimacicamara/bpce.git",
+      image: Image.asset("assets/bpce.gif"),
+      compatibility: ["computer", "tablet", "phone"],
+      isPhoneImage: false,
+      comment:
+          "Site web « Responsive Design » clone du site web BPCE Carrière dont le but est de mettre en évidence mes compétences dans angular."),
+  MyBuildedApps(
       appLink: "demarches-3d827.firebaseapp.com/#/",
       githubLink: "github.com/ibmandela/administratif.git",
       image: Image.asset("assets/admin_app.gif"),
@@ -177,14 +231,6 @@ List<MyBuildedApps> myAppList = [
       isPhoneImage: true,
       comment:
           "Application « Responsive Design » de chat compatible Android et IOS permettant aux conducteurs de véhicule de pouvoir communiquer entre eux. Permet l’enregistrement de plusieurs véhicules et leur gestion."),
-  MyBuildedApps(
-      appLink: "portfolio-camara-ibrahima.web.app/",
-      githubLink: "github.com/ibmandela/portfolio.git",
-      image: Image.asset("assets/portfolio.gif"),
-      compatibility: ["computer", "tablet", "phone"],
-      isPhoneImage: false,
-      comment:
-          "Site web « Responsive Design » montrant mon portfolio. Développé avec le Material Design 3 de flutter."),
 ];
 List<MyDestination> destinations = <MyDestination>[
   MyDestination(

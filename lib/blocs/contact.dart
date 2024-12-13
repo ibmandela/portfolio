@@ -17,6 +17,9 @@ class _ContactMeState extends State<ContactMe> {
 
   @override
   Widget build(BuildContext context) {
+    double fontSize = MediaQuery.of(context).size.width > 550
+        ? MediaQuery.of(context).size.width / 60
+        : MediaQuery.of(context).size.width / 30;
     return Row(
       children: [
         Expanded(
@@ -27,9 +30,9 @@ class _ContactMeState extends State<ContactMe> {
             child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
+            Text(
               "Contactez moi",
-              style: caracteristique,
+              style: titleStyle(fontSize, null),
             ),
             const SizedBox(
               height: 20,
@@ -47,9 +50,7 @@ class _ContactMeState extends State<ContactMe> {
                   },
                   child: Text(
                     "+33 6 98 55 75 67",
-                    style: caracteristique.copyWith(
-                      fontSize: MediaQuery.of(context).size.width / 60,
-                    ),
+                    style: titleStyle(fontSize, null),
                   ),
                 )),
             if (_isSms) _buildTextField(),
@@ -60,9 +61,7 @@ class _ContactMeState extends State<ContactMe> {
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     "+33 6 98 55 75 67",
-                    style: caracteristique.copyWith(
-                      fontSize: MediaQuery.of(context).size.width / 60,
-                    ),
+                    style: titleStyle(fontSize, null),
                   ),
                 )),
             _buildRow(
@@ -78,9 +77,7 @@ class _ContactMeState extends State<ContactMe> {
                   },
                   child: Text(
                     "ibrahimacicamara@gmail.com\nibdeveloppe@gmail.com",
-                    style: caracteristique.copyWith(
-                      fontSize: MediaQuery.of(context).size.width / 60,
-                    ),
+                    style: titleStyle(fontSize, null),
                   ),
                 )),
             if (_isMail) _buildTextField(),
@@ -94,9 +91,7 @@ class _ContactMeState extends State<ContactMe> {
                   },
                   child: Text(
                     "Ibrahima Camara",
-                    style: caracteristique.copyWith(
-                      fontSize: MediaQuery.of(context).size.width / 60,
-                    ),
+                    style: titleStyle(fontSize, null),
                   ),
                 )),
             _buildRow(
@@ -109,9 +104,7 @@ class _ContactMeState extends State<ContactMe> {
                   },
                   child: Text(
                     "Ibrahima Camara",
-                    style: caracteristique.copyWith(
-                      fontSize: MediaQuery.of(context).size.width / 60,
-                    ),
+                    style: titleStyle(fontSize, null),
                   ),
                 )),
           ],
@@ -144,7 +137,9 @@ class _ContactMeState extends State<ContactMe> {
             elevation: 10,
             child: SizedBox(
               height: 80,
-              width: MediaQuery.of(context).size.width / 5,
+              width: MediaQuery.of(context).size.width > 550
+                  ? MediaQuery.of(context).size.width / 5
+                  : MediaQuery.of(context).size.width / 3,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
@@ -168,11 +163,31 @@ class _ContactMeState extends State<ContactMe> {
             onPressed: () {
               setState(() {
                 _isSms
-                    ? sendSms(_messageControler.value.text)
+                    ? Theme.of(context).platform == TargetPlatform.iOS ||
+                            Theme.of(context).platform == TargetPlatform.android
+                        ? sendSms(_messageControler.value.text)
+                        : _showErrorDialog()
                     : sendMail(_messageControler.value.text);
               });
             })
       ],
     );
+  }
+
+  _showErrorDialog() {
+    return showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: const Text("Attention !!!"),
+              content: const Text(
+                  "La fonctionnalité d'envoi de SMS n'est disponible que sur un téléphone portable.\nVeuillez utiliser un téléphone portable ou envoyez moi un mail."),
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text("OK"))
+              ],
+            ));
   }
 }

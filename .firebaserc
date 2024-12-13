@@ -4,5 +4,6 @@
     "portfolio": "portfolio-9c78e"
   },
   "targets": {},
-  "etags": {}
+  "etags": {},
+  "dataconnectEmulatorConfig": {}
 }

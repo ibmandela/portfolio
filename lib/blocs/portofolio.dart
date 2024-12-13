@@ -26,28 +26,34 @@ class _PortefolioState extends State<Portefolio> {
             .where((e) => e.compatibility!.contains(_compatibility.value))
             .toList()
         : myAppList;
-    return Padding(
-      padding: const EdgeInsets.all(12.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          MyNavigationRailBar(
-            selectedItem: _compatibility,
-            selectedIndex: 0,
-            onDestinationSelected: (value) => {
-              setState(() {
-                _compatibility.value = value;
-              }),
-            },
-            backgroundColor: _backgroundColor,
-          ),
-          Expanded(
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        MyNavigationRailBar(
+          selectedItem: _compatibility,
+          selectedIndex: 0,
+          onDestinationSelected: (value) => {
+            setState(() {
+              _compatibility.value = value;
+            }),
+          },
+          backgroundColor: _backgroundColor,
+        ),
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: MediaQuery.of(context).size.width > 550
+                    ? MediaQuery.of(context).size.width / 10
+                    : 8),
             child: GridView.builder(
-              shrinkWrap: true,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisSpacing: 30,
-                  childAspectRatio: 0.85,
-                  crossAxisCount: 3),
+              // shrinkWrap: true,
+              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: MediaQuery.of(context).size.height / 2,
+                crossAxisSpacing: 1,
+                // childAspectRatio: 1,
+                // crossAxisCount:
+                //     MediaQuery.of(context).size.width > 550 ? 3 : 1
+              ),
               itemCount: list.length,
               itemBuilder: (context, index) {
                 return MyBigCard(
@@ -61,8 +67,8 @@ class _PortefolioState extends State<Portefolio> {
               },
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

@@ -22,6 +22,10 @@ class _MyDrawerState extends State<MyDrawer> {
   bool _isReorder = false;
   @override
   Widget build(BuildContext context) {
+    double fontSize = MediaQuery.of(context).size.width > 550
+        ? MediaQuery.of(context).size.width / 70
+        : MediaQuery.of(context).size.width / 20;
+
     return Drawer(
         child: Center(
       child: Padding(
@@ -35,10 +39,11 @@ class _MyDrawerState extends State<MyDrawer> {
                 onPressed: () => widget.onDestinationSelected(index),
                 child: Text(
                   pages.value[index].label,
-                  style: subtitle.copyWith(
-                      color: index == widget.selectedIndex
+                  style: textStyle(
+                      fontSize,
+                      index == widget.selectedIndex
                           ? Theme.of(context).primaryColor
-                          : null),
+                          : Colors.black),
                 ),
               );
             },

@@ -11,103 +11,158 @@ class Skills extends StatefulWidget {
 }
 
 class _SkillsState extends State<Skills> {
+  String? selectedItem;
   @override
   Widget build(BuildContext context) {
+    double fontSize = MediaQuery.of(context).size.width > 550
+        ? MediaQuery.of(context).size.width / 60
+        : MediaQuery.of(context).size.width / 30;
+
     return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text(
-            "Programmation :",
-            style: caracteristique,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Front-end",
-                    style: caracteristique.copyWith(
-                        color: Theme.of(context).primaryColor),
-                  ),
-                  SizedBox(
-                      width: MediaQuery.of(context).size.width / 2,
-                      child: MyGridView(
-                        list: front,
-                      ))
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Back-end",
-                    style: caracteristique.copyWith(
-                        color: Theme.of(context).primaryColor),
-                  ),
-                  SizedBox(
-                      width: MediaQuery.of(context).size.width / 3,
-                      child: MyGridView(list: back))
-                ],
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          const Expanded(
-            child: Column(
+      padding:
+          EdgeInsets.all(MediaQuery.of(context).size.width > 550 ? 40 : 12),
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Column(
               children: [
-                Expanded(
-                  child: Column(
-                    children: [
-                      Text(
-                        "Economie :",
-                        style: caracteristique,
-                      ),
-                      Text(
-                        "Finance, analyse financière, finance d’entreprise, finance de marché, comptabilité …",
-                        style: subtitle,
-                      ),
-                    ],
-                  ),
+                Text(
+                  "Programmation :",
+                  style: titleStyle(fontSize, null),
                 ),
-                Expanded(
-                  child: Column(
-                    children: [
-                      Text(
-                        "Maintenance :",
-                        style: caracteristique,
-                      ),
-                      Text(
-                        "Maintenance informatique, maintenance d’appareils téléphoniques ...",
-                        style: subtitle,
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Column(
-                    children: [
-                      Text(
-                        "Vente :",
-                        style: caracteristique,
-                      ),
-                      Text(
-                        "Vente, gestion de projets, gestion, gestion client …",
-                        style: subtitle,
+                MediaQuery.of(context).size.width > 550
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [_buildFront(fontSize), _buildBack(fontSize)],
                       )
-                    ],
-                  ),
+                    : Column(
+                        children: [_buildFront(fontSize), _buildBack(fontSize)],
+                      ),
+                const SizedBox(
+                  height: 20,
                 ),
               ],
             ),
-          ),
-        ],
+            SizedBox(
+              height: MediaQuery.of(context).size.height / 1.8,
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Text(
+                          "Economie :",
+                          style: titleStyle(fontSize, null),
+                        ),
+                        Text(
+                          "Finance, analyse financière, finance d’entreprise, finance de marché, comptabilité …",
+                          style: textStyle(fontSize, null),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Text(
+                          "Maintenance :",
+                          style: titleStyle(fontSize, null),
+                        ),
+                        Text(
+                          "Maintenance informatique, maintenance d’appareils téléphoniques ...",
+                          style: textStyle(fontSize, null),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Text(
+                          "Vente :",
+                          style: titleStyle(fontSize, null),
+                        ),
+                        Text(
+                          "Vente, gestion de projets, gestion, gestion client …",
+                          style: textStyle(fontSize, null),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
+    );
+  }
+
+  _buildFront(fontSize) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Front-end",
+          style: titleStyle(fontSize, Theme.of(context).primaryColor),
+        ),
+        MediaQuery.of(context).size.width > 550
+            ? SizedBox(
+                width: MediaQuery.of(context).size.width / 2.5,
+                child: MyGridView(
+                  selectedItem: selectedItem,
+                  onItemSelected: (label) {
+                    setState(() {});
+                    selectedItem = label;
+                  },
+                  list: front,
+                ))
+            : Column(
+                children: [
+                  MyGridView(
+                    selectedItem: selectedItem,
+                    onItemSelected: (label) {
+                      setState(() {});
+                      selectedItem = label;
+                    },
+                    list: front.sublist(0, 4),
+                  ),
+                  MyGridView(
+                    selectedItem: selectedItem,
+                    onItemSelected: (label) {
+                      setState(() {});
+                      selectedItem = label;
+                    },
+                    list: front.sublist(4),
+                  )
+                ],
+              )
+      ],
+    );
+  }
+
+  _buildBack(fontSize) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Back-end",
+          style: titleStyle(fontSize, Theme.of(context).primaryColor),
+        ),
+        SizedBox(
+            width: MediaQuery.of(context).size.width > 550
+                ? MediaQuery.of(context).size.width / 3
+                : null,
+            child: MyGridView(
+              selectedItem: selectedItem,
+              onItemSelected: (label) {
+                setState(() {});
+                selectedItem = label;
+              },
+              list: back,
+            ))
+      ],
     );
   }
 }
